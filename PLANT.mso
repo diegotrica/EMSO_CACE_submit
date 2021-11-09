@@ -1,6 +1,3 @@
-#This code was printed to .pdf format for submission.
-#Copy the text to a .txt file and save as PLANT.mso to open at EMSO.
-
 using "mbo_streams";
 using "PID";
 using "pressure_changers";
@@ -365,7 +362,6 @@ Model UnitVapourRecovery
 	tau					as time_sec	(Brief="Shift-gear assemble 1st-order time constant",Default=60);
 	Nr_Max				as positive	(Brief="Max compressor rotation",Unit='rpm',Default=12000);
 	Qout_Max(numOfStg)		as power		(Brief="Max heat removed from system",DisplayUnit='MW',Default=10000);
-	Nr_input				as positive	(Brief="Compressor rotation input command",Unit='rpm',Default=11000);
 
 	SET
 #NUMBER OF STAGES
@@ -618,7 +614,6 @@ Model UnitMainCompression
 	tau					as time_sec	(Brief="Shift-gear assemble 1st-order time constant",Default=60);
 	Nr_Max				as positive	(Brief="Max compressor rotation",Unit='rpm',Default=12000);
 	Qout_Max(numOfStg)		as power		(Brief="Max heat removed from system",DisplayUnit='MW',Default=10000);
-	Nr_input				as positive	(Brief="Compressor rotation input command",Unit='rpm',Default=11000);
 
 	SET
 #NUMBER OF STAGES
@@ -865,7 +860,6 @@ Model UnitExportCompression
 	rho_AIRstd			as dens_mass	(Brief="Air mass density at std. cond.",Default=1.2938);
 	Nr_Max				as positive	(Brief="Max compressor rotation",Unit='rpm',Default=12000);
 	Qout_Max(numOfStg)		as power		(Brief="Max heat removed from system",DisplayUnit='MW',Default=10000);
-	Nr_input				as positive	(Brief="Compressor rotation input command",Unit='rpm',Default=11000);
 
 	SET
 #NUMBER OF STAGES
@@ -1058,7 +1052,7 @@ FlowSheet UGKO
 	gas2		to	UGKO.GMX_001.Inlet(2);
 	
 	SPECIFY
-#gas1 STREAM CONDIDTIONS (from UOTR_init002.rlt --> UOTR.FE_001.Outlet)
+#gas1 STREAM CONDIDTIONS (from UOTR_init.rlt --> UOTR.FE_001.Outlet)
 	gas1.Qg 		= 5.41821e6 * 'm^3/d';
 	gas1.T 		= 307.708 * 'K';
 	gas1.hG		= 316.587 * 'kJ/kg';
@@ -1070,7 +1064,7 @@ FlowSheet UGKO
 	gas1.dg 		= 0.655926;
 	gas1.Ycg 		= 6.0547 * 'l/m^3';
 
-#gas2 STREAM CONDIDTIONS (from UVRC_init002.rlt --> UVRC.SPT(2).Outlet2)
+#gas2 STREAM CONDIDTIONS (from UVRC_init.rlt --> UVRC.SPT(2).Outlet2)
 	gas2.Qg 		= 133964 * 'm^3/d';
 	gas2.T 		= 369.452 * 'K';
 	gas2.hG		= 240.827 * 'kJ/kg';
@@ -1168,7 +1162,7 @@ FlowSheet UVRC
 	feed2nd		to UVRC.mix(2).Inlet3;
 
 	SPECIFY
-#feed1std CONDIDTIONS (from UOTR_init002.rlt --> UOTR.PV_003A.Outlet)
+#feed1std CONDIDTIONS (from UOTR_init.rlt --> UOTR.PV_003A.Outlet)
 	feed1st.Qg 		= 38260.6 * 'm^3/d';
 	feed1st.T 		= 352.893 * 'K';
 	feed1st.hG 		= 210.055 * 'kJ/kg';
@@ -1180,7 +1174,7 @@ FlowSheet UVRC
 	feed1st.dg 		= 2.01812;
 	feed1st.Ycg 		= 17.5637 * 'l/m^3';
 
-#feed2nd CONDIDTIONS (from UOTR_init002.rlt --> UOTR.PV_002A.Outlet)
+#feed2nd CONDIDTIONS (from UOTR_init.rlt --> UOTR.PV_002A.Outlet)
 	feed2nd.Qg 		= 96077.4 * 'm^3/d';
 	feed2nd.T 		= 352.955 * 'K';
 	feed2nd.hG 		= 240.74 * 'kJ/kg';
@@ -1298,6 +1292,8 @@ FlowSheet UOTR
 
 	SPECIFY
 #feed CONDIDTIONS
+	feed.Outlet.Qf		= 24000 * 'm^3/d';
+	feed.Outlet.BSW		= 0.1;
 	feed.Rgo 			= 250 * 'm^3/m^3';
 	feed.Cws 			= 255*'g/l';
 	feed.Outlet.T 		= (15+273.15)*'K';
@@ -1306,7 +1302,7 @@ FlowSheet UOTR
 	feed.Outlet.dg 	= 0.65;
 	feed.Outlet.Ycg 	= 6*'l/m^3';
 
-#cond1 CONDIDTIONS (from UGKO_init001.rlt --> UGKO.LV_001.Outlet)
+#cond1 CONDIDTIONS (from UGKO_init.rlt --> UGKO.LV_001.Outlet)
 	cond1.Qf 			= 1320.17 * 'm^3/d';
 	cond1.Qg 			= 5017.95 * 'm^3/d';
 	cond1.T 			= 312.502 * 'K';
@@ -1348,7 +1344,7 @@ FlowSheet UOTR
 	cond2.Ycg 		= 12.3944 * 'l/m^3';
 	cond2.YcgL		= 23.9743 * 'l/m^3';
 
-#cond3 CONDIDTIONS (from UHDP_init001.rlt --> UHDP.P_002.Cold.Outlet)
+#cond3 CONDIDTIONS (from UHDP_init.rlt --> UHDP.P_002.Cold.Outlet)
 	cond3.Qf 			= 999.157 * 'm^3/d';
 	cond3.Qg 			= 22880.6 * 'm^3/d';
 	cond3.T 			= 288.435 * 'K';
@@ -1646,7 +1642,7 @@ FlowSheet OilProcess
 	feed.Outlet.dg 	= 0.65;
 	feed.Outlet.Ycg		= 6*'l/m^3';
 
-#cond1 CONDIDTIONS (from UGKO_init001.rlt --> UGKO.LV_001.Outlet)
+#cond1 CONDIDTIONS (from UGKO_init.rlt --> UGKO.LV_001.Outlet)
 	cond1.Qf 			= 1320.17 * 'm^3/d';
 	cond1.Qg 			= 5017.95 * 'm^3/d';
 	cond1.T 			= 312.502 * 'K';
@@ -1688,7 +1684,7 @@ FlowSheet OilProcess
 	cond2.Ycg 		= 12.3944 * 'l/m^3';
 	cond2.YcgL		= 23.9743 * 'l/m^3';
 
-#cond3 CONDIDTIONS (from UHDP_init001.rlt --> UHDP.P_002.Cold.Outlet)
+#cond3 CONDIDTIONS (from UHDP_init.rlt --> UHDP.P_002.Cold.Outlet)
 	cond3.Qf 			= 999.157 * 'm^3/d';
 	cond3.Qg 			= 22880.6 * 'm^3/d';
 	cond3.T 			= 288.435 * 'K';
@@ -1717,7 +1713,7 @@ FlowSheet OilProcess
 	wdesalt.Outlet.d60 	= 0.88162;
 	wdesalt.Outlet.Tbn 	= 549.247 * 'K';
 
-#gas1 STREAM CONDIDTIONS (from UOTR_init002.rlt --> UOTR.FE_001.Outlet)
+#gas1 STREAM CONDIDTIONS (from UOTR_init.rlt --> UOTR.FE_001.Outlet)
 	gas1.Qg 			= 5.41821e6 * 'm^3/d';
 	gas1.T 			= 307.708 * 'K';
 	gas1.hG			= 316.587 * 'kJ/kg';
@@ -1729,7 +1725,7 @@ FlowSheet OilProcess
 	gas1.dg 			= 0.655926;
 	gas1.Ycg 			= 6.0547 * 'l/m^3';
 
-#gas2 STREAM CONDIDTIONS (from UVRC_init002.rlt --> UVRC.SPT(2).Outlet2)
+#gas2 STREAM CONDIDTIONS (from UVRC_init.rlt --> UVRC.SPT(2).Outlet2)
 	gas2.Qg 			= 133964 * 'm^3/d';
 	gas2.T 			= 369.452 * 'K';
 	gas2.hG			= 240.827 * 'kJ/kg';
@@ -1741,7 +1737,7 @@ FlowSheet OilProcess
 	gas2.dg 			= 1.56655;
 	gas2.Ycg 			= 13.6337 * 'l/m^3';
 
-#feed1std CONDIDTIONS (from UOTR_init002.rlt --> UOTR.PV_003A.Outlet)
+#feed1std CONDIDTIONS (from UOTR_init.rlt --> UOTR.PV_003A.Outlet)
 	feed1st.Qg 		= 38260.6 * 'm^3/d';
 	feed1st.T 		= 352.893 * 'K';
 	feed1st.hG 		= 210.055 * 'kJ/kg';
@@ -1753,7 +1749,7 @@ FlowSheet OilProcess
 	feed1st.dg 		= 2.01812;
 	feed1st.Ycg 		= 17.5637 * 'l/m^3';
 
-#feed2nd CONDIDTIONS (from UOTR_init002.rlt --> UOTR.PV_002A.Outlet)
+#feed2nd CONDIDTIONS (from UOTR_init.rlt --> UOTR.PV_002A.Outlet)
 	feed2nd.Qg 		= 96077.4 * 'm^3/d';
 	feed2nd.T 		= 352.955 * 'K';
 	feed2nd.hG 		= 240.74 * 'kJ/kg';
@@ -1949,7 +1945,7 @@ add new devices and re-simulate to renew the initial file*#
 	gas1.P = UGKO.GMX_001.Outlet.P;					#UOTR.FE_001.Outlet connected to UGKO
 	gas2.P = UGKO.GMX_001.Outlet.P;					#UVRC.SPT(2).Outlet2 connected to UGKO
 	cond1.P = UOTR.CondMix.InletC(1).P;				#UGKO.LV_001.Outlet connected to UOTR
-#	cond2.P = UOTR.CondMix.InletC(2).P;				#UGKO.LV_001.Outlet connected to UOTR
+#	cond2.P = UOTR.CondMix.InletC(2).P;				#UMCP.ExitL.Outlet connected to UOTR
 #	cond3.P = UOTR.CondMix.InletC(3).P;				#UHDP.P_002.Cold.Outlet connected to UOTR
 	feed1st.P = UOTR.PV_003A.Outlet.P;					#UOTR.PV_002A.Outlet connected to UVRC
 	feed2nd.P = UOTR.PV_002A.Outlet.P;					#UOTR.PV_003A.Outlet connected to UVRC
@@ -2092,7 +2088,7 @@ add new devices and re-simulate to renew the initial file*#
 	Dynamic=true;
 	SparseAlgebra=true;
 	TimeStart = 0;
-	TimeStep = 600;
+	TimeStep = 1;
 	TimeEnd = 600;
 	TimeUnit='min';
 	NLASolver(
@@ -2122,7 +2118,7 @@ FlowSheet UMCP
 	feedGas		to 	UMCP.InletSPT.Inlet;
 
 	SPECIFY
-#feedGas CONDIDTIONS (from OilProcess_init002.rlt --> UGKO.FE_001.Outlet)
+#feedGas CONDIDTIONS (from OilProcess_init.rlt --> UGKO.FE_001.Outlet)
 	feedGas.Qg 		= 5.5414e6*'m^3/d';
 	feedGas.T 		= 303.003 * 'K';
 	feedGas.hG		= 291.275 * 'kJ/kg';
@@ -2239,7 +2235,7 @@ FlowSheet UHDP
 #	liqUHDP		to UHDP.P_002.ColdMax.Inlet;
 
 	SPECIFY
-#feedUHDP CONDIDTIONS (from UMCP_init002 --> UMCP.ExitG.Outlet)
+#feedUHDP CONDIDTIONS (from UMCP_init --> UMCP.ExitG.Outlet)
 	feedUHDP.Qg 		= 5.53579e6 * 'm^3/d';
 	feedUHDP.T		= 303.15 * 'K';
 	feedUHDP.hG		= 225.589 * 'kJ/kg';
@@ -2251,7 +2247,7 @@ FlowSheet UHDP
 	feedUHDP.dg		= 0.676883;
 	feedUHDP.Ycg		= 6.24058 * 'l/m^3';
 
-#gas CONDIDTIONS (from UMCP_init002 --> UMCP.ExitG.Outlet)
+#gas CONDIDTIONS (from UMCP_init --> UMCP.ExitG.Outlet)
 	gasUHDP.Qg 		= 5.53579e6 * 'm^3/d';
 	gasUHDP.T			= 303.15 * 'K';
 	gasUHDP.hG		= 225.589 * 'kJ/kg';
@@ -2373,7 +2369,7 @@ FlowSheet UECP
 	UEHD.FE_001.Outlet		to str2EXP.Inlet;
 
 	SPECIFY
-#feedEXP CONDIDTIONS (from UHDP_init002.rlt --> UHDP.P_001.Cold.Outlet)
+#feedEXP CONDIDTIONS (from UHDP_init.rlt --> UHDP.P_001.Cold.Outlet)
 	feedEXP.Qg 		= 5.52737e6*'m^3/d';
 	feedEXP.T 		= 290.556 * 'K';
 	feedEXP.hG 		= 225.416 * 'kJ/kg';
@@ -2541,7 +2537,7 @@ FlowSheet OilGasProcess
 
 	SPECIFY
 #feed CONDIDTIONS
-#	feed.Outlet.Qf		= 24000 * 'm^3/d';		<---------------------- GO TO EQUATIONS >> DISTURBS SECTION
+#	feed.Outlet.Qf		= 24000 * 'm^3/d';		<------------------ GO TO EQUATIONS >> DISTURBS SECTION
 #	feed.Outlet.BSW	= 0.1;		<---------------------------------- GO TO EQUATIONS >> DISTURBS SECTION
 	feed.Rgo 			= 250 * 'm^3/m^3';
 	feed.Cws 			= 255*'g/l';
@@ -2551,7 +2547,7 @@ FlowSheet OilGasProcess
 	feed.Outlet.dg 	= 0.65;
 	feed.Outlet.Ycg	= 6*'l/m^3';
 
-#cond1 CONDIDTIONS (from UGKO_init001.rlt --> UGKO.LV_001.Outlet)
+#cond1 CONDIDTIONS (from UGKO_init.rlt --> UGKO.LV_001.Outlet)
 	cond1.Qf 			= 1320.17 * 'm^3/d';
 	cond1.Qg 			= 5017.95 * 'm^3/d';
 	cond1.T 			= 312.502 * 'K';
@@ -2593,7 +2589,7 @@ FlowSheet OilGasProcess
 	cond2.Ycg 		= 12.3944 * 'l/m^3';
 	cond2.YcgL		= 23.9743 * 'l/m^3';
 
-#cond3 CONDIDTIONS (from UHDP_init001.rlt --> UHDP.P_002.Cold.Outlet)
+#cond3 CONDIDTIONS (from UHDP_init.rlt --> UHDP.P_002.Cold.Outlet)
 	cond3.Qf 			= 999.157 * 'm^3/d';
 	cond3.Qg 			= 22880.6 * 'm^3/d';
 	cond3.T 			= 288.435 * 'K';
@@ -2622,7 +2618,7 @@ FlowSheet OilGasProcess
 	wdesalt.Outlet.d60 	= 0.88162;
 	wdesalt.Outlet.Tbn 	= 549.247 * 'K';
 
-#gas1 STREAM CONDIDTIONS (from UOTR_init002.rlt --> UOTR.FE_001.Outlet)
+#gas1 STREAM CONDIDTIONS (from UOTR_init.rlt --> UOTR.FE_001.Outlet)
 	gas1.Qg 			= 5.41821e6 * 'm^3/d';
 	gas1.T 			= 307.708 * 'K';
 	gas1.hG			= 316.587 * 'kJ/kg';
@@ -2634,7 +2630,7 @@ FlowSheet OilGasProcess
 	gas1.dg 			= 0.655926;
 	gas1.Ycg 			= 6.0547 * 'l/m^3';
 
-#gas2 STREAM CONDIDTIONS (from UVRC_init002.rlt --> UVRC.SPT(2).Outlet2)
+#gas2 STREAM CONDIDTIONS (from UVRC_init.rlt --> UVRC.SPT(2).Outlet2)
 	gas2.Qg 			= 133964 * 'm^3/d';
 	gas2.T 			= 369.452 * 'K';
 	gas2.hG			= 240.827 * 'kJ/kg';
@@ -2646,7 +2642,7 @@ FlowSheet OilGasProcess
 	gas2.dg 			= 1.56655;
 	gas2.Ycg 			= 13.6337 * 'l/m^3';
 
-#feed1std CONDIDTIONS (from UOTR_init002.rlt --> UOTR.PV_003A.Outlet)
+#feed1std CONDIDTIONS (from UOTR_init.rlt --> UOTR.PV_003A.Outlet)
 	feed1st.Qg 		= 38260.6 * 'm^3/d';
 	feed1st.T 		= 352.893 * 'K';
 	feed1st.hG 		= 210.055 * 'kJ/kg';
@@ -2658,7 +2654,7 @@ FlowSheet OilGasProcess
 	feed1st.dg 		= 2.01812;
 	feed1st.Ycg 		= 17.5637 * 'l/m^3';
 
-#feed2nd CONDIDTIONS (from UOTR_init002.rlt --> UOTR.PV_002A.Outlet)
+#feed2nd CONDIDTIONS (from UOTR_init.rlt --> UOTR.PV_002A.Outlet)
 	feed2nd.Qg 		= 96077.4 * 'm^3/d';
 	feed2nd.T 		= 352.955 * 'K';
 	feed2nd.hG 		= 240.74 * 'kJ/kg';
@@ -2670,7 +2666,7 @@ FlowSheet OilGasProcess
 	feed2nd.dg 		= 1.38539;
 	feed2nd.Ycg 		= 12.0571 * 'l/m^3';
 
-#feedGas CONDIDTIONS (from OilProcess_init002.rlt --> UGKO.FE_001.Outlet)
+#feedGas CONDIDTIONS (from OilProcess_init.rlt --> UGKO.FE_001.Outlet)
 	feedGas.Qg 		= 5.5414e6*'m^3/d';
 	feedGas.T 		= 303.003 * 'K';
 	feedGas.hG		= 291.275 * 'kJ/kg';
@@ -2682,7 +2678,7 @@ FlowSheet OilGasProcess
 	feedGas.dg 		= 0.676043;
 	feedGas.Ycg 		= 6.23283 * 'l/m^3';
 
-#feedUHDP CONDIDTIONS (from UMCP_init002 --> UMCP.ExitG.Outlet)
+#feedUHDP CONDIDTIONS (from UMCP_init --> UMCP.ExitG.Outlet)
 	feedUHDP.Qg 		= 5.53579e6 * 'm^3/d';
 	feedUHDP.T		= 303.15 * 'K';
 	feedUHDP.hG		= 225.589 * 'kJ/kg';
@@ -2694,7 +2690,7 @@ FlowSheet OilGasProcess
 	feedUHDP.dg		= 0.676883;
 	feedUHDP.Ycg		= 6.24058 * 'l/m^3';
 
-#gas CONDIDTIONS (from UMCP_init002 --> UMCP.ExitG.Outlet)
+#gas CONDIDTIONS (from UMCP_init --> UMCP.ExitG.Outlet)
 	gasUHDP.Qg 		= 5.53579e6 * 'm^3/d';
 	gasUHDP.T			= 303.15 * 'K';
 	gasUHDP.hG		= 225.589 * 'kJ/kg';
@@ -2727,7 +2723,7 @@ FlowSheet OilGasProcess
 	liqUHDP.Ycg		= 14.6783 * 'l/m^3';
 	liqUHDP.YcgL		= 33.801 * 'l/m^3';
 
-#feedEXP CONDIDTIONS (from UHDP_init002.rlt --> UHDP.P_001.Cold.Outlet)
+#feedEXP CONDIDTIONS (from UHDP_init.rlt --> UHDP.P_001.Cold.Outlet)
 	feedEXP.Qg 		= 5.52737e6 *'m^3/d';
 	feedEXP.T 		= 290.556 * 'K';
 	feedEXP.hG 		= 225.416 * 'kJ/kg';
@@ -3015,7 +3011,7 @@ add new devices and re-simulate to renew the initial file*#
 	gas1.P = UGKO.GMX_001.Outlet.P;					#UOTR.FE_001.Outlet connected to UGKO
 	gas2.P = UGKO.GMX_001.Outlet.P;					#UVRC.SPT(2).Outlet2 connected to UGKO
 	cond1.P = UOTR.CondMix.InletC(1).P;				#UGKO.LV_001.Outlet connected to UOTR
-	cond2.P = UOTR.CondMix.InletC(2).P;				#UGKO.LV_001.Outlet connected to UOTR
+	cond2.P = UOTR.CondMix.InletC(2).P;				#UMCP.ExitL.Outlet connected to UOTR
 	cond3.P = UOTR.CondMix.InletC(3).P;				#UHDP.P_002.Cold.Outlet connected to UOTR
 	feed1st.P = UOTR.PV_003A.Outlet.P;					#UOTR.PV_002A.Outlet connected to UVRC
 	feed2nd.P = UOTR.PV_002A.Outlet.P;					#UOTR.PV_003A.Outlet connected to UVRC
@@ -3227,7 +3223,7 @@ add new devices and re-simulate to renew the initial file*#
 	Dynamic=true;
 	SparseAlgebra=true;
 	TimeStart = 0;
-	TimeStep = 600;
+	TimeStep = 1;
 	TimeEnd = 600;
 	TimeUnit='min';
 	NLASolver(

@@ -1,14 +1,9 @@
-#This code was printed to .pdf format for submission.
-#Copy the text to a .txt file and save as pressure_changers.mso to open at EMSO.
-
 using "mbo_streams";
 
 Model valv_liq
 	PARAMETERS
 	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.054);
 	rho_AIRstd	as dens_mass		(Brief="Air mass density at std. cond.",Default=1.2938);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
-	Pref			as pressure		(Brief="Reference pressure for std. cond.",DisplayUnit='kPa',Default=1);
 	Cv			as positive		(Brief="Valve coefficient constant US units",Unit='gal/min');
 	Kv 			as positive		(Brief="Valve coefficient constant SI units",Unit='m^3/h');
 	Av 			as area			(Brief="Valve coefficient constant",DisplayUnit='cm^2');
@@ -133,8 +128,6 @@ Model valv_cond
 	PARAMETERS
 	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.054);
 	rho_AIRstd	as dens_mass		(Brief="Air mass density at std. cond.",Default=1.2938);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
-	Pref			as pressure		(Brief="Reference pressure for std. cond.",DisplayUnit='kPa',Default=1);
 	Cv			as positive		(Brief="Valve coefficient constant US units",Unit='gal/min');
 	Kv 			as positive		(Brief="Valve coefficient constant SI units",Unit='m^3/h');
 	Av 			as area			(Brief="Valve coefficient constant",DisplayUnit='cm^2');
@@ -241,8 +234,6 @@ Model valv_gas
 	PARAMETERS
 	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.054);
 	rho_AIRstd	as dens_mass		(Brief="Air mass density at std. cond.",Default=1.2938);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
-	Pref			as pressure		(Brief="Reference pressure for std. cond.",DisplayUnit='kPa',Default=1);
 	Cv			as positive		(Brief="Valve coefficient constant US units",Unit='gal/min');
 	Kv 			as positive		(Brief="Valve coefficient constant SI units",Unit='m^3/h');
 	Av			as area			(Brief="Valve coefficient constant",DisplayUnit='cm^2');
@@ -296,7 +287,7 @@ out	Outlet	as gas_stream;
 	"Expansion factor"
 	Fexp = 1-x/(3*Fgamma*xT);
 	
-	"Equates of outlet stream compositional variables"
+	"Equates of outlet stream for compositional variables"
 	Outlet.d60G = Inlet.d60G;
 	Outlet.TbnG = Inlet.TbnG;
 	Outlet.dg = Inlet.dg;
@@ -320,8 +311,6 @@ Model valv_gasliq
 	PARAMETERS
 	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.054);
 	rho_AIRstd	as dens_mass		(Brief="Air mass density at std. cond.",Default=1.2938);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
-	Pref			as pressure		(Brief="Reference pressure for std. cond.",DisplayUnit='kPa',Default=1);
 	Cv			as positive		(Brief="Valve coefficient constant US units",Unit='gal/min');
 	Kv 			as positive		(Brief="Valve coefficient constant SI units",Unit='m^3/h');
 	Av			as area			(Brief="Valve coefficient constant",DisplayUnit='cm^2');
@@ -399,7 +388,7 @@ out	Outlet		as gasliq_stream;
 	Rveq/Outlet.Ycg = (4.7e-7*(Outlet.P/'psi')^2 - 1.4e-3*(Outlet.P/'psi') + 2.3)*
 		exp(-5.438e-3*Outlet.dg)*exp(-6.8e8*Outlet.d60/(Outlet.T/'degR')^3);
 
-	"Equates of outlet stream compositional variables"
+	"Equates of outlet stream for compositional variables"
 	Outlet.d60G = Inlet.d60G;
 	Outlet.TbnG = Inlet.TbnG;
 	Outlet.dg = Inlet.dg;

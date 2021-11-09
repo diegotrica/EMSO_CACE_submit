@@ -1,6 +1,3 @@
-#This code was printed to .pdf format for submission.
-#Copy the text to a .txt file and save as thermal_changers.mso to open at EMSO.
-
 using "mbo_streams";
 
 Model hex_liq_basics
@@ -51,7 +48,7 @@ out	Outlet		as triphase_stream;
 	Outlet.Rv/Outlet.Ycg = (4.7e-7*(Outlet.P/'psi')^2 - 1.4e-3*(Outlet.P/'psi') + 2.3)*
 		exp(-5.438e-3*Outlet.dg)*exp(-6.8e8*Outlet.d60/(Outlet.T/'degR')^3);
 
-	"Equates of outlet stream compositional variables"
+	"Equates of outlet stream for compositional variables"
 	Outlet.d60 = Inlet.d60;
 	Outlet.Tbn = Inlet.Tbn;
 	Outlet.dg = Inlet.dg;
@@ -217,7 +214,7 @@ out	Outlet		as gasliq_stream;
 	Rveq/Outlet.Ycg = (4.7e-7*(Outlet.P/'psi')^2 - 1.4e-3*(Outlet.P/'psi') + 2.3)*
 		exp(-5.438e-3*Outlet.dg)*exp(-6.8e8*Outlet.d60/(Outlet.T/'degR')^3);
 
-	"Equates of outlet stream compositional variables"
+	"Equates of outlet stream for compositional variables"
 	Outlet.d60G = Inlet.d60G;
 	Outlet.TbnG = Inlet.TbnG;
 	Outlet.dg = Inlet.dg;
@@ -284,16 +281,16 @@ Model hexch_gasliq
 	Ccold = 
 		ColdMax.Inlet.Qg*rho_AIRstd*R/(29*'kg/kmol')*(
 			(0.7457*ColdMax.Inlet.dg^2 - 1.3405*ColdMax.Inlet.dg + 2.222) +
-			1e-3*(19.894*ColdMax.Inlet.dg - 1.902)*((ColdMax.Inlet.T/'K')-(Tref/'K')) +
-			1e-6*(-6.6562*ColdMax.Inlet.dg + 1.5103)*((ColdMax.Inlet.T/'K')^2-(Tref/'K')^2)
+			1e-3*(19.894*ColdMax.Inlet.dg - 1.902)/2*(473.15^2-(Tref/'K')^2)/(473.15-(Tref/'K')) +
+			1e-6*(-6.6562*ColdMax.Inlet.dg + 1.5103)/3*(473.15^3-(Tref/'K')^3)/(473.15-(Tref/'K'))
 			);
-
+			
 	"Hot heat capacity rate"
 	Chot = 
 		HotMax.Inlet.Qg*rho_AIRstd*R/(29*'kg/kmol')*(
 			(0.7457*HotMax.Inlet.dg^2 - 1.3405*HotMax.Inlet.dg + 2.222) +
-			1e-3*(19.894*HotMax.Inlet.dg - 1.902)*((HotMax.Inlet.T/'K')-(Tref/'K')) +
-			1e-6*(-6.6562*HotMax.Inlet.dg + 1.5103)*((HotMax.Inlet.T/'K')^2-(Tref/'K')^2)
+			1e-3*(19.894*HotMax.Inlet.dg - 1.902)/2*(473.15^2-(Tref/'K')^2)/(473.15-(Tref/'K')) +
+			1e-6*(-6.6562*HotMax.Inlet.dg + 1.5103)/3*(473.15^3-(Tref/'K')^3)/(473.15-(Tref/'K'))
 			);
 
 	"Heat capacity rate"
@@ -376,8 +373,8 @@ Model hexch_hliq_cgas
 	Chot = 
 		HotMax.Inlet.Qg*rho_AIRstd*R/(29*'kg/kmol')*(
 			(0.7457*HotMax.Inlet.dg^2 - 1.3405*HotMax.Inlet.dg + 2.222) +
-			1e-3*(19.894*HotMax.Inlet.dg - 1.902)*((HotMax.Inlet.T/'K')-(Tref/'K')) +
-			1e-6*(-6.6562*HotMax.Inlet.dg + 1.5103)*((HotMax.Inlet.T/'K')^2-(Tref/'K')^2)
+			1e-3*(19.894*HotMax.Inlet.dg - 1.902)/2*(473.15^2-(Tref/'K')^2)/(473.15-(Tref/'K')) +
+			1e-6*(-6.6562*HotMax.Inlet.dg + 1.5103)/3*(473.15^3-(Tref/'K')^3)/(473.15-(Tref/'K'))
 			);
 
 	"Heat capacity rate"

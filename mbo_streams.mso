@@ -1,6 +1,3 @@
-#This code was printed to .pdf format for submission.
-#Copy the text to a .txt file and save as mbo_streams.mso to open at EMSO.
-
 using "types";
 
 Model str3ph
@@ -179,11 +176,7 @@ end
 
 Model triphase_source
 	PARAMETERS
-	R			as positive		(Brief="Ideal gas constant",Unit='kJ/kmol/K',Default=8.31447);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
-	Pref			as pressure		(Brief="Reference pressure for std. cond.",DisplayUnit='kPa',Default=1);
 	rho_H2Ostd	as dens_mass		(Brief="Pure mass water density at std. cond.",Default=999.054);
-	rho_AIRstd	as dens_mass		(Brief="Air mass density at std. cond.",Default=1.2938);
 
 	VARIABLES
 out	Outlet	as triphase_stream;
@@ -238,11 +231,7 @@ end
 
 Model triphase_sink
 	PARAMETERS
-	R			as positive		(Brief="Ideal gas constant",Unit='kJ/kmol/K',Default=8.31447);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
-	Pref			as pressure		(Brief="Reference pressure for std. cond.",DisplayUnit='kPa',Default=1);
 	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.054);
-	rho_AIRstd	as dens_mass		(Brief="Air mass density at std. cond.",Default=1.2938);
 
 	VARIABLES
 in	Inlet	as str3ph;
@@ -435,11 +424,7 @@ end
 
 Model biphase_source
 	PARAMETERS
-	R			as positive		(Brief="Ideal gas constant",Unit='kJ/kmol/K',Default=8.31447);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
-	Pref			as pressure		(Brief="Reference pressure for std. cond.",DisplayUnit='kPa',Default=1);
 	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.054);
-	rho_AIRstd	as dens_mass		(Brief="Air mass density at std. cond.",Default=1.2938);
 	
 	VARIABLES
 out	Outlet		as biphase_stream;
@@ -482,11 +467,7 @@ end
 
 Model biphase_sink
 	PARAMETERS
-	R			as positive		(Brief="Ideal gas constant",Unit='kJ/kmol/K',Default=8.31447);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
-	Pref			as pressure		(Brief="Reference pressure for std. cond.",DisplayUnit='kPa',Default=1);
 	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.054);
-	rho_AIRstd	as dens_mass		(Brief="Air mass density at std. cond.",Default=1.2938);
 
 	VARIABLES
 in	Inlet		as str2ph;
@@ -560,7 +541,6 @@ end
 
 Model liquid_stream as strL
 	PARAMETERS
-	R			as positive		(Brief="Ideal gas constant",Unit='kJ/kmol/K',Default=8.31447);
 	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
 	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.0054);
 
@@ -624,7 +604,6 @@ end
 
 Model condensate_stream as strL
 	PARAMETERS
-	R			as positive		(Brief="Ideal gas constant",Unit='kJ/kmol/K',Default=8.31447);
 	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
 	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.0054);
 
@@ -659,8 +638,6 @@ end
 
 Model liquid_source
 	PARAMETERS
-	R			as positive		(Brief="Ideal gas constant",Unit='kJ/kmol/K',Default=8.31447);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
 	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.054);
 	
 	VARIABLES
@@ -704,8 +681,6 @@ end
 
 Model condensate_source
 	PARAMETERS
-	R			as positive		(Brief="Ideal gas constant",Unit='kJ/kmol/K',Default=8.31447);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
 	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.054);
 	
 	VARIABLES
@@ -737,8 +712,6 @@ end
 
 Model liquid_sink
 	PARAMETERS
-	R			as positive		(Brief="Ideal gas constant",Unit='kJ/kmol/K',Default=8.31447);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
 	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.054);
 
 	VARIABLES
@@ -775,8 +748,30 @@ in	Inlet		as strL;
 	rhoW * Inlet.Bw = Inlet.rho_Wstd;
 end
 
-Model condensate_sink as liquid_sink
+Model condensate_sink
+	PARAMETERS
+	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.054);
 
+	VARIABLES
+in	Inlet		as strL;
+
+	Qo			as positive		(Brief="Oil std. vol. flow rate",Unit='m^3/d',Default=1e4);
+	API			as positive		(Brief="Oil API",Default=30);
+	Kw			as positive		(Brief="Oil watson K-factor",Default=11.3);
+	rhoO			as dens_mass		(Brief="Oil phase mass density at process conditions",Default=800);
+
+	EQUATIONS
+	"Oil vol. flow rate at std. cond."
+	Qo = Inlet.Qf*(1-Inlet.BSW);
+	
+	"Oil API grade"
+	API = 141.5/Inlet.d60 - 131.5;
+
+	"Oil watson K-factor"
+	Kw * Inlet.d60 = (Inlet.Tbn/'degR')^(1/3);
+	
+	"Relationship between oil formation volume factor and mass density"
+	rhoO * Inlet.Bo = Inlet.d60 * rho_H2Ostd;
 end
 
 Model strGL
@@ -910,13 +905,6 @@ Model gasliq_stream as strGL
 end
 
 Model gasliq_source
-	PARAMETERS
-	R			as positive		(Brief="Ideal gas constant",Unit='kJ/kmol/K',Default=8.31447);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
-	Pref			as pressure		(Brief="Reference pressure for std. cond.",DisplayUnit='kPa',Default=1);
-	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.054);
-	rho_AIRstd	as dens_mass		(Brief="Air mass density at std. cond.",Default=1.2938);
-	
 	VARIABLES
 out	Outlet		as gasliq_stream;
 	
@@ -953,12 +941,6 @@ out	Outlet		as gasliq_stream;
 end
 
 Model gasliq_sink
-	PARAMETERS
-	R			as positive		(Brief="Ideal gas constant",Unit='kJ/kmol/K',Default=8.31447);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
-	Pref			as pressure		(Brief="Reference pressure for std. cond.",DisplayUnit='kPa',Default=1);
-	rho_H2Ostd	as dens_mass		(Brief="Pure water mass density at std. cond.",Default=999.054);
-
 	VARIABLES
 in	Inlet		as strGL;
 	
@@ -1089,12 +1071,6 @@ Model gas_stream as strG
 end
 
 Model gas_source
-	PARAMETERS
-	R			as positive		(Brief="Ideal gas constant",Unit='kJ/kmol/K',Default=8.31447);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
-	Pref			as pressure		(Brief="Reference pressure for std. cond.",DisplayUnit='kPa',Default=1);
-	rho_AIRstd	as dens_mass		(Brief="Air mass density at std. cond.",Default=1.2938);
-	
 	VARIABLES
 out	Outlet		as gas_stream;
 	
@@ -1122,12 +1098,6 @@ out	Outlet		as gas_stream;
 end
 
 Model gas_sink
-	PARAMETERS
-	R			as positive		(Brief="Ideal gas constant",Unit='kJ/kmol/K',Default=8.31447);
-	Tref			as temperature		(Brief="Reference temperature for std. cond.",Default=288.70556);
-	Pref			as pressure		(Brief="Reference pressure for std. cond.",DisplayUnit='kPa',Default=1);
-	rho_AIRstd	as dens_mass		(Brief="Air mass density at std. cond.",Default=1.2938);
-
 	VARIABLES
 in	Inlet		as strG;
 	
@@ -1202,7 +1172,7 @@ Model water_stream as strW
 		);
 
 	"Water phase (brine) mass density"
-	rhoW = Bw * rho_Wstd;
+	rhoW * Bw = rho_Wstd;
 
 	"Water phase formation volume factor"
 	Bw = (1+DVWP)/(1+DVWT);

@@ -1,6 +1,3 @@
-#This code was printed to .pdf format for submission.
-#Copy the text to a .txt file and save as test_models.mso to open at EMSO.
-
 using "mbo_streams";
 using "PID";
 using "mixers_splitters";
